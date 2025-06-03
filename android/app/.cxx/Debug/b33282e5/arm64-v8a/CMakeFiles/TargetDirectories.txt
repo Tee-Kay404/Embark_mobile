@@ -1,0 +1,2 @@
+C:/Users/TEE_KAY/Desktop/Embark/embark_app/android/app/.cxx/Debug/b33282e5/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/TEE_KAY/Desktop/Embark/embark_app/android/app/.cxx/Debug/b33282e5/arm64-v8a/CMakeFiles/rebuild_cache.dir

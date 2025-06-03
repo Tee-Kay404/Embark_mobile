@@ -1,0 +1,554 @@
+{
+  "products": [
+     {
+      "id": 1,
+      "imagePath": "assets/images/bottles/wine_1.png",
+      "color": "gold",
+      "code": "194**23",
+      "description": "Chateau Margaux!",
+      "price": 284.6,
+      "volume": "780ml",
+      "category": "bottles"
+    },
+    {
+      "id": 2,
+      "imagePath": "assets/images/bottles/wine_2.png",
+      "color": "purple",
+      "code": "814**14",
+      "description": "Grape Caymus!",
+      "price": 273.4,
+      "volume": "730ml",
+      "category": "bottles"
+    },
+    {
+      "id": 3,
+      "imagePath": "assets/images/bottles/wine_3.png",
+      "color": "black",
+      "code": "187**01",
+      "description": "Baron",
+      "price": 255.0,
+      "volume": "750ml",
+      "category": "bottles"
+    },
+    {
+      "id": 4,
+      "imagePath": "assets/images/bottles/wine_4.jpg",
+      "color": "blue",
+      "code": "112**73",
+      "description": "Duckhorn Merlot",
+      "price": 224.9,
+      "volume": "750ml",
+      "category": "bottles"
+    },
+    {
+      "id": 5,
+      "imagePath": "assets/images/bottles/wine_5.jpg",
+      "color": "black",
+      "code": "324**51",
+      "description": "Pink noir",
+      "price": 252.3,
+      "volume": "702ml",
+      "category": "bottles"
+    },
+    {
+      "id": 6,
+      "imagePath": "assets/images/bottles/wine_6.jpg",
+      "color": "red",
+      "code": "711**30",
+      "description": "Provence rose!",
+      "price": 211.1,
+      "volume": "780ml",
+      "category": "bottles"
+    },
+    {
+      "id": 7,
+      "imagePath": "assets/images/bottles/wine_8.png",
+      "color": "brown",
+      "code": "125**95",
+      "description": "King Krug",
+      "price": 395.2,
+      "volume": "703ml",
+      "category": "bottles"
+    },
+    {
+      "id": 8,
+      "imagePath": "assets/images/bottles/wine_9.png",
+      "color": "black",
+      "code": "004**80",
+      "description": "Dom Biscol",
+      "price": 277.33,
+      "volume": "751ml",
+      "category": "bottles"
+    },
+    {
+      "id": 9,
+      "imagePath": "assets/images/bottles/wine_7.png",
+      "color": "black",
+      "code": "125**95",
+      "description": "Golden Oak",
+      "price": 167.4,
+      "volume": "710ml",
+      "category": "bottles"
+    },
+    {
+      "id": 10,
+      "imagePath": "assets/images/bottles/wine_10.png",
+      "color": "black",
+      "code": "150**21",
+      "description": "Lord's vine",
+      "price": 190.1,
+      "volume": "701ml",
+      "category": "bottles"
+    },
+    {
+      "id": 11,
+      "imagePath": "assets/images/bottles/color.jpg",
+      "color": "blue900",
+      "code": "113**82",
+      "description": "Nexus shake",
+      "price": 50.5,
+      "volume": "120ml",
+      "category": "bottles"
+    },
+    {
+      "id": 12,
+      "imagePath": "assets/images/bottles/juice.jpg",
+      "color": "blue",
+      "code": "021**15",
+      "description": "Orango shade",
+      "price": 124.2,
+      "volume": "50ml",
+      "category": "bottles"
+    },
+    {
+      "id": 13,
+      "imagePath": "assets/images/bottles/vodka_transparent.jpg",
+      "color": "green",
+      "code": "200**60",
+      "description": "Vodka",
+      "price": 143.9,
+      "volume": "210ml",
+      "category": "bottles"
+    },
+    {
+      "id": 14,
+      "imagePath": "assets/images/bottles/waddle_cream.jpg",
+      "color": "red",
+      "code": "103**52",
+      "description": "Waddle cream",
+      "price": 197.4,
+      "volume": "250ml",
+      "category": "bottles"
+    },
+    {
+      "id": 15,
+      "imagePath": "assets/images/bottles/whiskey.jpg",
+      "color": "brown",
+      "code": "221**00",
+      "description": "Brown whiskey",
+      "price": 285.2,
+      "volume": "150ml",
+      "category": "bottles"
+    },
+    {
+      "id": 16,
+      "imagePath": "assets/images/bottles/color.jpg",
+      "color": "black",
+      "code": "014**05",
+      "description": "Mila Coit",
+      "price": 185.23,
+      "volume": "182ml",
+      "category": "bottles"
+    },
+    {
+      "id": 17,
+      "imagePath": "assets/images/bottles/color.jpg",
+      "color": "red",
+      "code": "234**55",
+      "description": "Amazing!",
+      "price": 167.12,
+      "volume": "250ml",
+      "category": "bottles"
+    },
+     {
+    "id": 1,
+    "imagePath": "assets/images/clothings/shirt_1.png",
+    "color": "black",
+    "code": "947**29",
+    "description": "Classic Blue Shirt",
+    "price": 89.23,
+    "size": "M",
+    "category": "clothings"
+  },
+  {
+    "id": 2,
+    "imagePath": "assets/images/clothings/suit_1.png",
+    "color": "black",
+    "code": "162**84",
+    "description": "Jason's",
+    "price": 113.67,
+    "size": "L",
+    "category": "clothings"
+  },
+  {
+    "id": 3,
+    "imagePath": "assets/images/clothings/shirt_3.png",
+    "color": "green",
+    "code": "503**90",
+    "description": "Cornell Blue",
+    "price": 72.45,
+    "size": "S",
+    "category": "clothings"
+  },
+  {
+    "id": 4,
+    "imagePath": "assets/images/clothings/jacket_1.png",
+    "color": "black",
+    "code": "221**67",
+    "description": "Elegant Jacket",
+    "price": 139.88,
+    "size": "XL",
+    "category": "clothings"
+  },
+  {
+    "id": 5,
+    "imagePath": "assets/images/clothings/purple_jacket.jpg",
+    "color": "black",
+    "code": "334**41",
+    "description": "Purple Zip-Up",
+    "price": 127.39,
+    "size": "M",
+    "category": "clothings"
+  },
+  {
+    "id": 6,
+    "imagePath": "assets/images/clothings/jean_1.png",
+    "color": "blue",
+    "code": "718**22",
+    "description": "Vintage ",
+    "price": 95.51,
+    "size": "L",
+    "category": "clothings"
+  },
+  {
+    "id": 7,
+    "imagePath": "assets/images/clothings/jacket_2.png",
+    "color": "blues",
+    "code": "690**73",
+    "description": "Modoran Blue",
+    "price": 105.30,
+    "size": "XL",
+    "category": "clothings"
+  },
+  {
+    "id": 8,
+    "imagePath": "assets/images/clothings/shirt_4.png",
+    "color": "black",
+    "code": "829**56",
+    "description": "Louis Vuitton",
+    "price": 78.64,
+    "size": "S",
+    "category": "clothings"
+  },
+  {
+    "id": 9,
+    "imagePath": "assets/images/clothings/jean_2.png",
+    "color": "black",
+    "code": "829**56",
+    "description": "Louis Vuitton",
+    "price": 78.64,
+    "size": "S",
+    "category": "clothings"
+  },
+  {
+      "id": 10,
+      "imagePath": "assets/images/clothings/black_shirt.jpg",
+      "color": "black",
+      "code": "234**55",
+      "description": "Men's black",
+      "price": 24.2,
+      "volume": "50ml",
+      "category": "clothings"
+    },
+   {
+    "id": 1,
+    "imagePath": "assets/images/furniture/blue_family_chair.png",
+    "color": "grey",
+    "code": "874**65",
+    "description": "Family chair",
+    "price": 143.5,
+    "size": "2.4ft",
+    "category": "furniture"
+  },
+  {
+    "id": 2,
+    "imagePath": "assets/images/furniture/chair_1.png",
+    "color": "black",
+    "code": "112**98",
+    "description": "Sezx's chair",
+    "price": 179.2,
+    "size": "1.8ft",
+    "category": "furniture"
+  },
+  {
+    "id": 3,
+    "imagePath": "assets/images/furniture/brown_bed.png",
+    "color": "grey",
+    "code": "532**31",
+    "description": "Family size bed",
+    "price": 163.7,
+    "size": "3.0ft",
+    "category": "furniture"
+  },
+  {
+    "id": 4,
+    "imagePath": "assets/images/furniture/chair_2.png",
+    "color": "black",
+    "code": "903**12",
+    "description": "Stench",
+    "price": 84.9,
+    "size": "1.5ft",
+    "category": "furniture"
+  },
+  {
+    "id": 5,
+    "imagePath": "assets/images/furniture/couch_small.png",
+    "color": "grey",
+    "code": "321**76",
+    "description": "Mini couch",
+    "price": 122.4,
+    "size": "1.2ft",
+    "category": "furniture"
+  },
+  {
+    "id": 6,
+    "imagePath": "assets/images/furniture/chair_3.png",
+    "color": "black",
+    "code": "788**09",
+    "description": "Barts stool",
+    "price": 190.0,
+    "size": "2.1ft",
+    "category": "furniture"
+  },
+  {
+    "id": 7,
+    "imagePath": "assets/images/furniture/chair_4.png",
+    "color": "grey",
+    "code": "656**44",
+    "description": "Barche's drawer",
+    "price": 101.3,
+    "size": "1.7ft",
+    "category": "furniture"
+  },
+  {
+    "id": 8,
+    "imagePath": "assets/images/furniture/drawer.png",
+    "color": "black",
+    "code": "475**21",
+    "description": "Drawer",
+    "price": 135.9,
+    "size": "1.4ft",
+    "category": "furniture"
+  },
+  {
+    "id": 1,
+    "imagePath": "assets/images/electronics/ar_vr.png",
+    "color": "black",
+    "code": "728**43",
+    "description": "AR/VR Headset",
+    "price": 652.75,
+    "model": "XR-200",
+    "category": "electronics"
+  },
+  {
+    "id": 2,
+    "imagePath": "assets/images/electronics/macbook.png",
+    "color": "black",
+    "code": "381**90",
+    "description": "MacBook Laptop",
+    "price": 687.30,
+    "model": "M2-Pro",
+    "category": "electronics"
+  },
+  {
+    "id": 3,
+    "imagePath": "assets/images/electronics/smart_phone.png",
+    "color": "black",
+    "code": "496**18",
+    "description": "Smart Phone",
+    "price": 413.49,
+    "model": "Zeta 5G",
+    "category": "electronics"
+  },
+  {
+    "id": 4,
+    "imagePath": "assets/images/electronics/switch.png",
+    "color": "black",
+    "code": "833**27",
+    "description": "Gaming Switch",
+    "price": 578.60,
+    "model": "Switch-Lite",
+    "category": "electronics"
+  },
+   {
+    "id": 1,
+    "imagePath": "assets/images/accessories/black_bag.png",
+    "color": "black",
+    "code": "813**47",
+    "description": "Black bag",
+    "price": 112.75,
+    "size": "15cm",
+    "category": "accessories"
+  },
+  {
+    "id": 2,
+    "imagePath": "assets/images/accessories/black_carrier.png",
+    "color": "black",
+    "code": "592**38",
+    "description": "Black carrier",
+    "price": 92.40,
+    "size": "20cm",
+    "category": "accessories"
+  },
+  {
+    "id": 3,
+    "imagePath": "assets/images/accessories/blue_bag.png",
+    "color": "black",
+    "code": "174**86",
+    "description": "Blue bag",
+    "price": 132.20,
+    "size": "18cm",
+    "category": "accessories"
+  },
+  {
+    "id": 4,
+    "imagePath": "assets/images/accessories/blue_carrier.png",
+    "color": "black",
+    "code": "735**92",
+    "description": "Blue carrier",
+    "price": 65.30,
+    "size": "25cm",
+    "category": "accessories"
+  },
+  {
+    "id": 1,
+    "imagePath": "assets/images/automobiles/volkswagen.png",
+    "color": "black",
+    "code": "213**47",
+    "description": "Volkswagen",
+    "price": 223900,
+    "model": "Passat R-Line",
+    "category": "automobile"
+  },
+  {
+    "id": 2,
+    "imagePath": "assets/images/automobiles/vintage_bentley.png",
+    "color": "black",
+    "code": "866**94",
+    "description": "Vintage Bentley",
+    "price": 385500,
+    "model": "Blower 4½ Litre",
+    "category": "automobile"
+  },
+  {
+    "id": 3,
+    "imagePath": "assets/images/automobiles/porsche.jpg",
+    "color": "black",
+    "code": "125**78",
+    "description": "Porsche",
+    "price": 399800,
+    "model": "911 Carrera",
+    "category": "automobile"
+  },
+  {
+    "id": 4,
+    "imagePath": "assets/images/automobiles/mazda.jpg",
+    "color": "black",
+    "code": "964**31",
+    "description": "Mazda",
+    "price": 213000,
+    "model": "CX-5 AWD",
+    "category": "automobile"
+  },
+  {
+    "id": 5,
+    "imagePath": "assets/images/automobiles/mercedes.jpg",
+    "color": "black",
+    "code": "581**62",
+    "description": "Mercedes",
+    "price": 342200,
+    "model": "GLC 300",
+    "category": "automobile"
+  },
+  {
+    "id": 6,
+    "imagePath": "assets/images/automobiles/jaguar.jpg",
+    "color": "black",
+    "code": "490**11",
+    "description": "Jaguar",
+    "price": 311750,
+    "model": "F-PACE R-Dynamic",
+    "category": "automobile"
+  },
+  {
+    "id": 7,
+    "imagePath": "assets/images/automobiles/honda.jpg",
+    "color": "black",
+    "code": "771**09",
+    "description": "Honda",
+    "price": 287400,
+    "model": "Civic EX",
+    "category": "automobile"
+  },
+  {
+    "id": 8,
+    "imagePath": "assets/images/automobiles/chevrolet.jpg",
+    "color": "black",
+    "code": "348**22",
+    "description": "Chevrolet",
+    "price": 256300,
+    "model": "LT Turbo",
+    "category": "automobile"
+  },
+  {
+    "id": 1,
+    "imagePath": "assets/images/footwears/brown_leather_shoes.jpg",
+    "color": "black",
+    "code": "312**67",
+    "description": "Brown Leather Shoes",
+    "price": 77.5,
+    "size": "43",
+    "category": "wears"
+  },
+  {
+    "id": 2,
+    "imagePath": "assets/images/footwears/green_sneakers.jpg",
+    "color": "black",
+    "code": "904**28",
+    "description": "Green Sneakers",
+    "price": 61.3,
+    "size": "41",
+    "category": "wears"
+  },
+  {
+    "id": 3,
+    "imagePath": "assets/images/footwears/pink_sport_shoes.jpg",
+    "color": "black",
+    "code": "721**05",
+    "description": "Pink Sport Shoes",
+    "price": 94.0,
+    "size": "39",
+    "category": "wears"
+  },
+  {
+    "id": 4,
+    "imagePath": "assets/images/footwears/woman_shoes.jpg",
+    "color": "black",
+    "code": "645**92",
+    "description": "Woman Shoes",
+    "price": 89.7,
+    "size": "38",
+    "category": "wears"
+  }
+  ]
+}
