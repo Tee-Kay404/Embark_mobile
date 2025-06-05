@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
@@ -14,6 +15,7 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
+  String? userName;
   final user = FirebaseAuth.instance.currentUser;
   List<Map<String, dynamic>> drawerItems = [
     {
@@ -52,6 +54,18 @@ class _DrawerPageState extends State<DrawerPage> {
       'route': PageRoutes.contact.name
     },
   ];
+  @override
+  void initState() {
+    super.initState();
+    _loadUsername();
+  }
+
+  void _loadUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('saved_username') ?? 'User';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,13 +109,28 @@ class _DrawerPageState extends State<DrawerPage> {
                         user?.email?.characters.first.toUpperCase() ?? '?',
                       ),
                     ),
-                    title: Text(
-                      user?.email?.toLowerCase().toString() ?? '?',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.surface),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName ?? '',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                        ),
+                        Text(
+                          user?.email?.toString() ?? '',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                        ),
+                      ],
                     ),
+
                     subtitle: Text('customer',
                         style: TextStyle(
                             fontSize: 12,

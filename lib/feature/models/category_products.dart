@@ -20,7 +20,7 @@ class CategoryProductsPage extends StatefulWidget {
 
 class _CategoryProductsPageState extends State<CategoryProductsPage> {
   List<Product> products = [];
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -29,6 +29,11 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
   }
 
   Future<void> fetchProducts() async {
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(seconds: 3));
+
     final response =
         await http.get(Uri.parse('http://localhost:3000/products'));
     if (response.statusCode == 200) {
@@ -53,68 +58,73 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.category} Products'),
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: theme.colorScheme.surface,
-      ),
-      body: products.isEmpty
-          ? Center(
-              child: Text(
-                'No products found in ${widget.category}.',
-                style: theme.textTheme.bodyMedium,
-              ),
-            )
-          : ListView.builder(
-              padding: EdgeInsets.only(top: 15),
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final item = products[index];
-                var style = Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary);
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    contentPadding: EdgeInsets.only(right: 10),
-                    tileColor: Theme.of(context).colorScheme.surface,
-                    leading: CircleAvatar(
-                      radius: 40.h,
-                      backgroundImage: AssetImage(item.imagePath),
+        appBar: AppBar(
+          title: Text('${widget.category} Products'),
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.surface,
+        ),
+        body: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : products.isEmpty
+                ? Center(
+                    child: Text(
+                      'No products found in ${widget.category}.',
+                      style: theme.textTheme.bodyMedium,
                     ),
-                    title: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.description,
-                            style: style?.copyWith(
-                                fontSize: 16, color: Colors.black)),
-                        Text('\$${item.code}', style: style)
-                      ],
-                    ),
-                    subtitle: Text('${item.volume}', style: style),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${item.id.toInt()}', style: style),
-                        Text('\$${item.price.toInt()}', style: style)
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        PageRoutes.productDetails.name,
-                        arguments: item,
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.only(top: 15),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final item = products[index];
+                      var style = Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.secondary);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 5),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          contentPadding: EdgeInsets.only(right: 10),
+                          tileColor: Theme.of(context).colorScheme.surface,
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 40.h,
+                            child: Image.asset(item.imagePath),
+                          ),
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item.description,
+                                  style: style?.copyWith(
+                                      fontSize: 16, color: Colors.black)),
+                              Text('\$${item.code}', style: style)
+                            ],
+                          ),
+                          subtitle: Text('${item.volume}', style: style),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${item.id.toInt()}', style: style),
+                              Text('\$${item.price.toInt()}', style: style)
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              PageRoutes.productDetails.name,
+                              arguments: item,
+                            );
+                          },
+                        ),
                       );
                     },
-                  ),
-                );
-              },
-            ),
-    );
+                  ));
   }
 }

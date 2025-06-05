@@ -13,7 +13,20 @@
           "package_name": "com.example.Embark_mobile"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "850193877373-ulpb3qrasqtrksfhb0hmuufb1im052km.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.Embark_mobile",
+            "certificate_hash": "d03f1da204d0a8af7eaabd5853f946424e4bb672"
+          }
+        },
+        {
+          "client_id": "850193877373-1050tq666abkaeq97ketuoobjmipep6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAvzHkLBIkPUercAF3YUSUuol9gdwyHaLs"
@@ -21,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850193877373-1050tq666abkaeq97ketuoobjmipep6f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "850193877373-8skeiqjuf7mdslhac27cd7oscjnar89l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.teekay.embark"
+              }
+            }
+          ]
         }
       }
     }

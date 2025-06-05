@@ -5,9 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
+
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  String storeName = 'My Store'; // default value
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStoreName();
+  }
+
+  Future<void> _loadStoreName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      storeName = prefs.getString('saved_username') ?? 'My Store';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +113,7 @@ class AccountPage extends StatelessWidget {
                   radius: 30,
                   child: Icon(Icons.person),
                 ),
-                title: const Text("Emma Wilson"),
+                title: Text(storeName),
                 titleTextStyle: theme.textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 24.sp,

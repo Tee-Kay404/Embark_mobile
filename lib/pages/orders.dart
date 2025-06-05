@@ -1,12 +1,12 @@
 import 'package:Embark_mobile/feature/providers/cart_provider.dart';
 import 'package:Embark_mobile/feature/shared/email_avatar.dart';
-import 'package:Embark_mobile/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:searchfield/searchfield.dart';
 
 class OrdersPage extends StatefulWidget {
   final Map<String, dynamic> products;
@@ -80,41 +80,39 @@ class _OrdersPageState extends State<OrdersPage> {
                     ),
                     Gap(15.h),
                     // Search Field
-                    // Container(
-                    //   height: 40.h,
-                    //   child: SearchField<String>(
-                    //     suggestions: orders
-                    //         .map((e) => SearchFieldListItem<String>(e))
-                    //         .toList(),
-                    //     searchInputDecoration: SearchInputDecoration(
-                    //       hint: 'Search',
-                    //       maintainHintSize: 20,
-                    //       searchStyle: Theme.of(context)
-                    //           .textTheme
-                    //           .bodyMedium
-                    //           ?.copyWith(
-                    //               fontSize: 14, fontWeight: FontWeight.normal),
-                    //       contentPadding:
-                    //           EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                    //       suffixIcon: Icon(
-                    //         Icons.search_outlined,
-                    //         size: 18,
-                    //         color: Colors.grey.shade500,
-                    //       ),
-                    //       border: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(20),
-                    //           borderSide: BorderSide.none),
-                    //       fillColor: Theme.of(context).colorScheme.surface,
-                    //       filled: true,
-                    //       hintText: 'Search product',
-                    //       hintStyle:
-                    //           Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    //                 color: Colors.grey.shade500,
-                    //                 fontSize: 16,
-                    //               ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      height: 40.h,
+                      child: SearchField<String>(
+                        suggestions: orders
+                            .map((e) => SearchFieldListItem<String>(e))
+                            .toList(),
+                        searchInputDecoration: SearchInputDecoration(
+                          searchStyle: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  fontSize: 14, fontWeight: FontWeight.normal),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                          suffixIcon: Icon(
+                            Icons.search_outlined,
+                            size: 18,
+                            color: Colors.grey.shade500,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide.none),
+                          fillColor: Theme.of(context).colorScheme.surface,
+                          filled: true,
+                          hintText: 'Search product',
+                          hintStyle:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey.shade500,
+                                    fontSize: 16,
+                                  ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

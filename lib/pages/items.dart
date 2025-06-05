@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:searchfield/searchfield.dart';
 
 class ItemsPage extends StatefulWidget {
   const ItemsPage({super.key});
@@ -31,6 +32,7 @@ class _ItemsPageState extends State<ItemsPage> {
   List<Product> filteredProducts = [];
   List<String> productNames = [];
   bool _isGridView = true;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -41,6 +43,10 @@ class _ItemsPageState extends State<ItemsPage> {
   }
 
   Future<List<Product>> getProducts() async {
+    setState(() => isLoading = true);
+
+    await Future.delayed(const Duration(seconds: 3));
+
     final product = await ProductApi().fetchProducts();
     setState(() {
       products = product;
@@ -49,7 +55,9 @@ class _ItemsPageState extends State<ItemsPage> {
               item.category == _selectedFilter.split(' ').first.toLowerCase())
           .toList();
       productNames = products.map((e) => e.description).toList();
+      isLoading = false;
     });
+
     return products;
   }
 
@@ -156,65 +164,64 @@ class _ItemsPageState extends State<ItemsPage> {
                     ],
                   ),
                   const Gap(15),
-                  // Container(
-                  // height: 40,
-                  //   child: SearchField<String>(
-                  //     onSuggestionTap: (SearchFieldListItem<String> item) {
-                  //       setState(() {
-                  //         filteredProducts = products
-                  //             .where((p) => p.description
-                  //                 .toLowerCase()
-                  //                 .contains(item.searchKey.toLowerCase()))
-                  //             .toList();
-                  //       });
-                  //     },
-                  //     itemHeight: 40,
-                  //     suggestions: productNames
-                  //         .map<SearchFieldListItem<String>>(
-                  //             (e) => SearchFieldListItem<String>(e))
-                  //         .toList(),
-                  //     suggestionStyle: TextStyle(
-                  //       fontSize: 18,
-                  //       fontWeight: FontWeight.normal,
-                  //     ),
-                  //     searchInputDecoration: SearchInputDecoration(
-                  //       maintainHintSize: 20,
-                  //       hint: 'Search',
-                  //       searchStyle: Theme.of(context)
-                  //           .textTheme
-                  //           .bodyMedium
-                  //           ?.copyWith(
-                  //               fontSize: 14, fontWeight: FontWeight.normal),
-                  //       contentPadding: EdgeInsets.only(
-                  //           left: 15, right: 15, top: 0, bottom: 0),
-                  //       suffixIcon: Icon(Icons.search_outlined,
-                  //           size: 18, color: Colors.grey.shade500),
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20),
-                  //         borderSide: BorderSide.none,
-                  //       ),
-                  //       fillColor: Theme.of(context).colorScheme.surface,
-                  //       filled: true,
-                  //       hintText: 'Search product',
-                  //       hintStyle: Theme.of(context)
-                  //           .textTheme
-                  //           .bodyMedium
-                  //           ?.copyWith(
-                  //               color: Colors.grey.shade500, fontSize: 16),
-                  //     ),
-                  //     marginColor: Theme.of(context).colorScheme.surface,
-                  //     maxSuggestionsInViewPort: 8,
-                  //     onSubmit: (String value) {
-                  //       setState(() {
-                  //         filteredProducts = products
-                  //             .where((p) => p.description
-                  //                 .toLowerCase()
-                  //                 .contains(value.toLowerCase()))
-                  //             .toList();
-                  //       });
-                  //     },
-                  //   ),
-                  // ),
+                  Container(
+                    height: 40,
+                    child: SearchField<String>(
+                      onSuggestionTap: (SearchFieldListItem<String> item) {
+                        setState(() {
+                          filteredProducts = products
+                              .where((p) => p.description
+                                  .toLowerCase()
+                                  .contains(item.searchKey.toLowerCase()))
+                              .toList();
+                        });
+                      },
+                      itemHeight: 40,
+                      suggestions: productNames
+                          .map<SearchFieldListItem<String>>(
+                              (e) => SearchFieldListItem<String>(e))
+                          .toList(),
+                      suggestionStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      searchInputDecoration: SearchInputDecoration(
+                          searchStyle: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  fontSize: 14, fontWeight: FontWeight.normal),
+                          contentPadding: EdgeInsets.only(
+                              left: 15, right: 15, top: 0, bottom: 0),
+                          suffixIcon: Icon(Icons.search_outlined,
+                              size: 18, color: Colors.grey.shade500),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none,
+                          ),
+                          fillColor: Theme.of(context).colorScheme.surface,
+                          filled: true,
+                          hintText: 'Search product',
+                          hintStyle: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  color: Colors.grey.shade500, fontSize: 16),
+                          maintainHintHeight: true,
+                          maintainHintSize: true),
+                      marginColor: Theme.of(context).colorScheme.surface,
+                      maxSuggestionsInViewPort: 8,
+                      onSubmit: (String value) {
+                        setState(() {
+                          filteredProducts = products
+                              .where((p) => p.description
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase()))
+                              .toList();
+                        });
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -281,97 +288,107 @@ class _ItemsPageState extends State<ItemsPage> {
           ),
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: _isGridView
-                ? GridView.builder(
-                    padding: EdgeInsets.only(top: 15),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisExtent: 200.0,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.8,
-                    ),
-                    itemCount: filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      final item = filteredProducts[index];
-                      return ProductCard(
-                        id: item.id,
-                        imagePath: item.imagePath,
-                        description: item.description,
-                        price: item.price.toInt(),
-                        color: getColorFromString(item.color),
-                        volume: item.volume ?? '',
-                        size: item.size ?? '',
-                        model: item.model ?? '',
-                        code: item.code,
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            PageRoutes.productDetails.name,
-                            arguments: item,
-                          );
-                        },
-                      );
-                    },
-                  )
-                : ListView.builder(
-                    padding: EdgeInsets.only(top: 15),
-                    itemCount: filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      final item = filteredProducts[index];
-                      var style = Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.secondary);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 5),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          contentPadding: EdgeInsets.only(right: 10),
-                          tileColor: Theme.of(context).colorScheme.surface,
-                          leading: CircleAvatar(
-                            radius: 40.h,
-                            backgroundImage: AssetImage(item.imagePath),
+          child: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: _isGridView
+                      ? GridView.builder(
+                          padding: EdgeInsets.only(top: 15),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisExtent: 200.0,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 0.8,
                           ),
-                          title: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(item.description,
-                                  style: style?.copyWith(
-                                      fontSize: 16,
-                                      color: getColorFromString(item.color))),
-                              Text('\$${item.code}', style: style)
-                            ],
-                          ),
-                          subtitle: Text('${item.volume}', style: style),
-                          trailing: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('${item.id.toInt()}', style: style),
-                              Text('\$${item.price.toInt()}', style: style)
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              PageRoutes.productDetails.name,
-                              arguments: item,
+                          itemCount: filteredProducts.length,
+                          itemBuilder: (context, index) {
+                            final item = filteredProducts[index];
+                            return ProductCard(
+                              id: item.id,
+                              imagePath: item.imagePath,
+                              description: item.description,
+                              price: item.price.toInt(),
+                              color: getColorFromString(item.color),
+                              volume: item.volume ?? '',
+                              size: item.size ?? '',
+                              model: item.model ?? '',
+                              code: item.code,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  PageRoutes.productDetails.name,
+                                  arguments: item,
+                                );
+                              },
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          padding: EdgeInsets.only(top: 15),
+                          itemCount: filteredProducts.length,
+                          itemBuilder: (context, index) {
+                            final item = filteredProducts[index];
+                            var style = Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0.0, vertical: 5),
+                              child: ListTile(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                contentPadding: EdgeInsets.only(right: 10),
+                                tileColor:
+                                    Theme.of(context).colorScheme.surface,
+                                leading: CircleAvatar(
+                                  radius: 40.h,
+                                  backgroundImage: AssetImage(item.imagePath),
+                                ),
+                                title: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(item.description,
+                                        style: style?.copyWith(
+                                            fontSize: 16,
+                                            color: getColorFromString(
+                                                item.color))),
+                                    Text('\$${item.code}', style: style)
+                                  ],
+                                ),
+                                subtitle: Text('${item.volume}', style: style),
+                                trailing: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('${item.id.toInt()}', style: style),
+                                    Text('\$${item.price.toInt()}',
+                                        style: style)
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    PageRoutes.productDetails.name,
+                                    arguments: item,
+                                  );
+                                },
+                              ),
                             );
                           },
                         ),
-                      );
-                    },
-                  ),
-          ),
+                ),
         ),
       ],
     );

@@ -11,7 +11,6 @@ import 'package:Embark_mobile/pages/category.dart';
 import 'package:Embark_mobile/pages/contact.dart';
 import 'package:Embark_mobile/pages/discount_offers.dart';
 import 'package:Embark_mobile/pages/gift_card.dart';
-import 'package:Embark_mobile/pages/native_splash.dart';
 import 'package:Embark_mobile/pages/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:Embark_mobile/components/drawer/drawer.dart';
@@ -75,7 +74,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       builder = (ctx) => Dashboard();
       break;
     case PageRoutes.forgotPassword:
-      builder = (ctx) => const ForgotPassword();
+      builder = (ctx) => ForgotPasswordScreen();
       break;
     case PageRoutes.drawer:
       builder = (ctx) => const DrawerPage();
@@ -110,9 +109,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       break;
     case PageRoutes.cardPayment:
       builder = (ctx) => CardPayment();
-      break;
-    case PageRoutes.splash:
-      builder = (ctx) => const NativeSplash();
       break;
     case PageRoutes.giftCards:
       builder = (ctx) => const GiftCard();

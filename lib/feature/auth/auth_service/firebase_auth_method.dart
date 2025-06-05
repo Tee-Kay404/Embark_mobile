@@ -1,17 +1,15 @@
 import 'package:Embark_mobile/feature/util/show_dialog.dart';
 import 'package:Embark_mobile/routes.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
 
   //  SignUp METHOD
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> emailSignUp({
     required String email,
@@ -20,16 +18,14 @@ class FirebaseAuthMethods {
     required BuildContext context,
   }) async {
     try {
-      UserCredential userCred = await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Save username to Firestore
-      await _firestore.collection('users').doc(userCred.user!.uid).set({
-        'email': email,
-        'username': username,
-      });
+      // Save username locally
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('saved_username', username);
 
       await sendEmailVerification(context);
       showFirebaseDialog(context,
@@ -46,7 +42,7 @@ class FirebaseAuthMethods {
       showFirebaseDialog(
           context, '✅ Account successfully created. You can now sign in.');
       await Future.delayed(const Duration(seconds: 2));
-      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, PageRoutes.login.name);
     } on FirebaseAuthException catch (e) {
       showFirebaseDialog(context, e.message ?? 'Something went wrong');
     }
@@ -65,10 +61,11 @@ class FirebaseAuthMethods {
         password: password,
       );
 
-      final userDoc =
-          await _firestore.collection('users').doc(userCred.user!.uid).get();
+      // Validate username locally
+      final prefs = await SharedPreferences.getInstance();
+      final savedUsername = prefs.getString('saved_username') ?? '';
 
-      if (!userDoc.exists || userDoc['username'] != username) {
+      if (savedUsername != username) {
         showFirebaseDialog(context, '❌ Incorrect username');
         await _auth.signOut(); // sign out invalid login
         return;
@@ -82,7 +79,7 @@ class FirebaseAuthMethods {
         showFirebaseDialog(context, 'Email not verified');
       }
     } on FirebaseAuthException catch (e) {
-      showFirebaseDialog(context, e.message!);
+      showFirebaseDialog(context, e.message ?? 'Something went wrong');
     }
   }
 
@@ -105,56 +102,20 @@ class FirebaseAuthMethods {
     }
   }
 
-  // Phone Method
-  // Future<void> phoneSignIn({
-  //   required BuildContext context,
-  //   required String phoneNumber,
-  // }) async {
-  //   final codeController = TextEditingController();
-  //   if (kIsWeb) {
-  //     ConfirmationResult result = await _auth.signInWithPhoneNumber(
-  //       phoneNumber,
-  //     );
-  //   } else {
-  //     // for Android nd Ios
-  //     await _auth.verifyPhoneNumber(
-  //       phoneNumber: phoneNumber,
-  //       verificationCompleted: (PhoneAuthCredential credential) async {
-  //         await _auth.signInWithCredential(credential);
-  //       },
-  //       verificationFailed: (e) {
-  //         showFirebaseDialog(context, e.message!);
-  //       },
-  //       codeSent: (String verificationId, int? resendToken) async {
-  //         showOTPDialog(
-  //           context: context,
-  //           codeController: codeController,
-  //           onPressed: () async {
-  //             PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //               verificationId: verificationId,
-  //               smsCode: codeController.text.trim(),
-  //             );
-  //             await _auth.signInWithCredential(credential);
-  //             Navigator.of(context).pop();
-  //           },
-  //         );
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {},
-  //     );
-  //   }
-  // }
-
-  // FaceBook Login
-  // Future<void> signInWithFacebook(BuildContext context) async {
-  //   try {
-  // final LoginResult loginResult = await FacebookAuth.instance.login();
-  //     final OAuthCredential facebookAuthCredential =
-  //         FacebookAuthProvider.credential(loginResult.accessToken!.token);
-  //     await _auth.signInWithCredential(facebookAuthCredential);
-  //   } on FirebaseAuthException catch (e) {
-  //     showFirebaseDialog(context, e.message!);
-  //   }
-  // }
+  // Password Reset Method
+  Future<void> passwordReset(
+      {required String email, required BuildContext context}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      showFirebaseDialog(context, 'Reset link sent! Check your email.');
+    } on FirebaseException catch (e) {
+      String errorMessage = 'Something went wrong';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email';
+      }
+      showFirebaseDialog(context, errorMessage);
+    }
+  }
 
   //  Google SignIn
   signInWithGoogle() async {

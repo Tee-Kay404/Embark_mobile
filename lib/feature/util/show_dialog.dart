@@ -11,11 +11,15 @@ Future<void> showFirebaseDialog(BuildContext context, String message) {
     barrierDismissible: true,
     builder: (context) {
       return AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Text(
           message,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(color: Colors.white),
         ),
       );
     },

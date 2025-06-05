@@ -12,7 +12,16 @@ class CardPayment extends StatelessWidget {
   void copyToClipboard(BuildContext context, String text, String label) {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$label copied to clipboard')),
+      SnackBar(
+        content: Text(
+          '$label copied to clipboard',
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(color: Theme.of(context).colorScheme.surface),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
@@ -72,7 +81,7 @@ class CardPayment extends StatelessWidget {
               child: QrImageView(
                 data: qrData,
                 version: QrVersions.auto,
-                size: 180,
+                size: 150,
               ),
             ),
             SizedBox(height: 20),

@@ -16,101 +16,120 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _currentPage = 0;
+  final PageController _pageController = PageController();
 
   List<Widget> get pages => [
         ItemsPage(),
-        OrdersPage(
-          products: {},
-        ),
+        OrdersPage(products: {}),
         CartPage(products: {}),
         SettingsPage(),
         AccountPage()
       ];
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  void _onNavTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[100],
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-        floatingActionButton: FloatingActionButton(
-          splashColor: Colors.transparent,
-          isExtended: true,
-          mini: true,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
-          onPressed: () {
-            showDialog(
-              builder: (BuildContext context) => AlertDialog(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                title: Text('Add product to inventory list?'),
-                titleTextStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.surface,
-                ),
-                content: TextField(
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(8),
-                      fillColor: Theme.of(context).colorScheme.surface,
-                      filled: true,
-                      hintText: 'Add product',
-                      hintStyle:
-                          TextStyle(fontSize: 16, color: Colors.grey.shade500),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide.none,
-                      )),
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          splashFactory: NoSplash.splashFactory,
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                          backgroundColor: WidgetStatePropertyAll(
-                              Theme.of(context).colorScheme.surface),
-                          foregroundColor: WidgetStatePropertyAll(Colors.blue)),
-                      child: Text(
-                        'Add',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ButtonStyle(
-                          splashFactory: NoSplash.splashFactory,
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                          backgroundColor: WidgetStatePropertyAll(Colors.white),
-                          foregroundColor: WidgetStatePropertyAll(Colors.blue)),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
-                ],
+      backgroundColor: Colors.grey[100],
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: FloatingActionButton(
+        splashColor: Colors.transparent,
+        isExtended: true,
+        mini: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              title: Text('Add product to inventory list?'),
+              titleTextStyle: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.surface,
               ),
-              context: context,
-            );
-          },
-          child: Icon(
-            Icons.add,
-            size: 25,
-            color: Colors.white,
-          ),
-        ),
-        drawer: DrawerPage(),
-        body: IndexedStack(
-          index: _currentPage,
-          children: pages,
-        ),
-        bottomNavigationBar: BottomNavbar(
-          currentPage: _currentPage,
-          onPageChanged: (value) => setState(() {
-            _currentPage = value;
-          }),
-        ));
+              content: TextField(
+                style: TextStyle(fontSize: 14, color: Colors.black),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(8),
+                  fillColor: Theme.of(context).colorScheme.surface,
+                  filled: true,
+                  hintText: 'Add product',
+                  hintStyle:
+                      TextStyle(fontSize: 16, color: Colors.grey.shade500),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    splashFactory: NoSplash.splashFactory,
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+                    backgroundColor: WidgetStatePropertyAll(
+                        Theme.of(context).colorScheme.surface),
+                    foregroundColor: WidgetStatePropertyAll(Colors.blue),
+                  ),
+                  child: Text(
+                    'Add',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ButtonStyle(
+                    splashFactory: NoSplash.splashFactory,
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+                    backgroundColor: WidgetStatePropertyAll(Colors.white),
+                    foregroundColor: WidgetStatePropertyAll(Colors.blue),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+        child: Icon(Icons.add, size: 25, color: Colors.white),
+      ),
+      drawer: DrawerPage(),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: pages,
+      ),
+      bottomNavigationBar: BottomNavbar(
+        currentPage: _currentPage,
+        onPageChanged: _onNavTapped,
+      ),
+    );
   }
 }

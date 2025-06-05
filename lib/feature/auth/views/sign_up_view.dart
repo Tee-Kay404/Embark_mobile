@@ -25,17 +25,18 @@ final _color = Colors.grey.shade600;
 
 class _SignUpState extends State<SignUp> {
   bool obscuredPassword = true;
+  bool obscuredConfirmPassword = true;
   bool _isTapped = false;
   bool _checked = false;
   String? selectedCountry;
 
   @override
   void dispose() {
-    super.dispose();
     _passwordController.dispose();
     _emailController.dispose();
     _nameController.dispose();
     _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   String? validateUserName(String? userName) {
@@ -62,12 +63,21 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  bool _isLoading = false;
+  bool _showTermsError = false;
+
   void signUp() async {
-    await FirebaseAuthMethods(FirebaseAuth.instance).emailSignUp(
+    setState(() => _isLoading = true);
+    try {
+      await FirebaseAuthMethods(FirebaseAuth.instance).emailSignUp(
         username: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
-        context: context);
+        context: context,
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   void togglePasswordVisibility() {
@@ -78,7 +88,7 @@ class _SignUpState extends State<SignUp> {
 
   void toggleConfirmPasswordVisibility() {
     setState(() {
-      obscuredPassword = !obscuredPassword;
+      obscuredConfirmPassword = !obscuredConfirmPassword;
     });
   }
 
@@ -103,7 +113,7 @@ class _SignUpState extends State<SignUp> {
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 28.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +246,7 @@ class _SignUpState extends State<SignUp> {
                         fontWeight: FontWeight.bold,
                         color: color),
                   ),
-                  const Gap(8),
+                  Gap(8),
                   EmbarkTextfield(
                     focusedErrorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -259,7 +269,7 @@ class _SignUpState extends State<SignUp> {
                     },
                     borderRadius: BorderRadius.circular(12),
                     hintText: 'Confirm password',
-                    obscureText: obscuredPassword,
+                    obscureText: obscuredConfirmPassword,
                     controller: _confirmPasswordController,
                     prefixIcon: Icon(
                       Icons.lock_outline,
@@ -268,7 +278,7 @@ class _SignUpState extends State<SignUp> {
                     suffixIcon: IconButton(
                         onPressed: () => toggleConfirmPasswordVisibility(),
                         icon: Icon(
-                          obscuredPassword
+                          obscuredConfirmPassword
                               ? Icons.visibility_off_outlined
                               : Icons.visibility_outlined,
                           color: Colors.grey.shade600,
@@ -300,11 +310,14 @@ class _SignUpState extends State<SignUp> {
                       Checkbox(
                         checkColor: Theme.of(context).colorScheme.surface,
                         side: BorderSide(
-                            color: Theme.of(context).colorScheme.primary),
+                            color: _showTermsError
+                                ? Colors.red
+                                : Theme.of(context).colorScheme.primary),
                         value: _checked,
                         onChanged: (bool? value) {
                           setState(() {
                             _checked = value!;
+                            _showTermsError = false;
                           });
                         },
                       ),
@@ -312,9 +325,12 @@ class _SignUpState extends State<SignUp> {
                       RichText(
                           text: TextSpan(
                               style: TextStyle(
-                                  fontSize: 15.h,
-                                  color: Colors.blueGrey.shade500,
-                                  fontWeight: FontWeight.w500),
+                                fontSize: 15.h,
+                                color: _showTermsError
+                                    ? Colors.red
+                                    : Colors.blueGrey.shade500,
+                                fontWeight: FontWeight.w500,
+                              ),
                               children: [
                             const TextSpan(
                               text: 'I agree to the',
@@ -326,8 +342,11 @@ class _SignUpState extends State<SignUp> {
                             TextSpan(
                                 text: 'Terms of Service',
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary)),
+                                    color: _showTermsError
+                                        ? Colors.red
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .primary)),
                             const WidgetSpan(
                                 child: SizedBox(
                               width: 5,
@@ -342,24 +361,44 @@ class _SignUpState extends State<SignUp> {
                             TextSpan(
                                 text: 'Privacy\n Policy',
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary)),
+                                    color: _showTermsError
+                                        ? Colors.red
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .primary)),
                           ])),
                     ],
                   ),
                   const Gap(17),
                   GradientButton(
-                    text: 'Sign Up',
                     onTap: () {
-                      if (_formKey.currentState!.validate() &&
-                          FirebaseAuth.instance.currentUser != null) {
+                      setState(() {
+                        _showTermsError = !_checked;
+                      });
+
+                      if (_formKey.currentState!.validate() && _checked) {
                         _formKey.currentState!.save();
                         signUp();
-                      } else {
-                        return null;
                       }
                     },
                     width: double.infinity,
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                   const Gap(20),
                   Row(

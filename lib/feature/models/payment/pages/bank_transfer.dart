@@ -56,7 +56,7 @@ class _BankTransferState extends State<BankTransfer> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.arrow_back, size: 24.sp),
+                    icon: Icon(Icons.arrow_back, size: 22.sp),
                   ),
                   Gap(10.h),
                   Text(
@@ -64,7 +64,7 @@ class _BankTransferState extends State<BankTransfer> {
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
-                        ?.copyWith(fontSize: 20.h, fontWeight: FontWeight.w600),
+                        ?.copyWith(fontSize: 19.h, fontWeight: FontWeight.w600),
                   )
                 ],
               ),
