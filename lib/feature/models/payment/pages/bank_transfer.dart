@@ -1,5 +1,6 @@
 import 'package:Embark_mobile/components/textfields/embark_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
@@ -64,7 +65,7 @@ class _BankTransferState extends State<BankTransfer> {
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
-                        ?.copyWith(fontSize: 19.h, fontWeight: FontWeight.w600),
+                        ?.copyWith(fontSize: 15.h, fontWeight: FontWeight.w600),
                   )
                 ],
               ),
@@ -81,6 +82,7 @@ class _BankTransferState extends State<BankTransfer> {
                 children: [
                   Expanded(
                     child: EmbarkTextfield(
+                      autofocus: true,
                       controller: _cardController,
                       keyBoardType: TextInputType.number,
                       borderRadius: BorderRadius.circular(5),
@@ -211,6 +213,11 @@ class _BankTransferState extends State<BankTransfer> {
                 children: [
                   Expanded(
                     child: EmbarkTextfield(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(4),
+                        ExpiryDateFormatter(),
+                      ],
                       controller: _expiryController,
                       keyBoardType: TextInputType.datetime,
                       borderRadius: BorderRadius.circular(5),
@@ -240,6 +247,23 @@ class _BankTransferState extends State<BankTransfer> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Enter a valid expiration date';
+                        }
+
+                        final expRegExp = RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$');
+                        if (!expRegExp.hasMatch(value)) {
+                          return 'Format must be MM/YY';
+                        }
+
+                        final parts = value.split('/');
+                        final month = int.parse(parts[0]);
+                        final year =
+                            int.parse('20${parts[1]}'); // convert YY to 20YY
+
+                        final now = DateTime.now();
+                        final inputDate = DateTime(year, month + 1);
+
+                        if (inputDate.isBefore(DateTime(now.year, now.month))) {
+                          return 'Card expired';
                         }
                         return null;
                       },
@@ -289,7 +313,7 @@ class _BankTransferState extends State<BankTransfer> {
                             context: context,
                             builder: (BuildContext context) {
                               return Container(
-                                height: 180,
+                                height: 200.h,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0, vertical: 10),
@@ -304,7 +328,7 @@ class _BankTransferState extends State<BankTransfer> {
                                             .bodyMedium
                                             ?.copyWith(fontSize: 15),
                                       ),
-                                      Gap(20.h),
+                                      Gap(15.h),
                                       Text(
                                         'The CVV is a 3-digit security code on the back of your card',
                                         style: Theme.of(context)
@@ -314,7 +338,7 @@ class _BankTransferState extends State<BankTransfer> {
                                                 fontSize: 10,
                                                 color: Colors.grey.shade500),
                                       ),
-                                      Gap(20.h),
+                                      Gap(15.h),
                                       Container(
                                         height: 40,
                                         child: Center(
@@ -419,6 +443,23 @@ class _BankTransferState extends State<BankTransfer> {
           ),
         ),
       )),
+    );
+  }
+}
+
+class ExpiryDateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    var text = newValue.text;
+    if (text.length == 2 && !text.contains('/')) {
+      text += '/';
+    } else if (text.length > 2 && text[2] != '/') {
+      text = text.substring(0, 2) + '/' + text.substring(2);
+    }
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
     );
   }
 }

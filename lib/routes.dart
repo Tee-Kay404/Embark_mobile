@@ -108,7 +108,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       builder = (ctx) => AccountPage();
       break;
     case PageRoutes.cardPayment:
-      builder = (ctx) => CardPayment();
+      final args = settings.arguments;
+      if (args is Product) {
+        builder = (ctx) => CardPayment(
+              product: args,
+            );
+      } else {
+        builder = (ctx) => Dashboard();
+      }
       break;
     case PageRoutes.giftCards:
       builder = (ctx) => const GiftCard();

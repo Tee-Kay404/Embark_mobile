@@ -10,7 +10,8 @@ import 'package:gap/gap.dart';
 import 'package:searchfield/searchfield.dart';
 
 class ItemsPage extends StatefulWidget {
-  const ItemsPage({super.key});
+  final ValueNotifier<bool> triggerSearchNotifier;
+  const ItemsPage({super.key, required this.triggerSearchNotifier});
 
   @override
   State<ItemsPage> createState() => _ItemsPageState();
@@ -34,18 +35,43 @@ class _ItemsPageState extends State<ItemsPage> {
   bool _isGridView = true;
   bool isLoading = true;
 
+  late final VoidCallback _triggerListener;
+
   @override
   void initState() {
     super.initState();
     getProducts();
     productNames = [];
     _selectedFilter = filters[0];
+
+    _triggerListener = () {
+      if (widget.triggerSearchNotifier.value) {
+        setState(() => showSearch = true);
+        Future.delayed(Duration(milliseconds: 100), () {
+          if (mounted) _searchFocusNode.requestFocus();
+        });
+        widget.triggerSearchNotifier.value = false; // reset
+      }
+    };
+
+    widget.triggerSearchNotifier.addListener(_triggerListener);
   }
+
+  @override
+  void dispose() {
+    widget.triggerSearchNotifier.removeListener(_triggerListener);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+  bool showSearch = false;
 
   Future<List<Product>> getProducts() async {
     setState(() => isLoading = true);
 
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
     final product = await ProductApi().fetchProducts();
     setState(() {
@@ -165,8 +191,10 @@ class _ItemsPageState extends State<ItemsPage> {
                   ),
                   const Gap(15),
                   Container(
-                    height: 40,
+                    height: 60,
                     child: SearchField<String>(
+                      controller: _searchController,
+                      focusNode: _searchFocusNode,
                       onSuggestionTap: (SearchFieldListItem<String> item) {
                         setState(() {
                           filteredProducts = products

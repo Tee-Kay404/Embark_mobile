@@ -40,7 +40,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   String? validateUserName(String? userName) {
-    RegExp userNameRegex = RegExp(r'^[A-Z][a-zA-Z]*$');
+    RegExp userNameRegex = RegExp(r'^[A-Z][a-zA-Z_]*$');
     final validUserName = userNameRegex.hasMatch(userName ?? '');
     if (userName!.isEmpty) {
       return 'This Field is required';
@@ -109,11 +109,11 @@ class _SignUpState extends State<SignUp> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28.0),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: SafeArea(
+          child: Form(
+            key: _formKey,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

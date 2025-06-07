@@ -14,24 +14,21 @@ void showLoginModal(BuildContext context) {
   final _passwordController = TextEditingController();
 
   showModalBottomSheet(
-    barrierColor: Colors.transparent.withOpacity(0.5),
+    isScrollControlled: true,
+    context: context,
+    barrierColor: Colors.black.withOpacity(0.3),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
-    isDismissible: true,
-    enableDrag: true,
-    context: context,
     builder: (BuildContext context) {
       bool isLoading = false;
       bool isVisible = false;
       bool isTapped = false;
 
       return StatefulBuilder(
-        builder: (BuildContext context, setState) {
+        builder: (context, setState) {
           void togglePasswordVisibility() {
-            setState(() {
-              isVisible = !isVisible;
-            });
+            setState(() => isVisible = !isVisible);
           }
 
           Future<void> signIn() async {
@@ -45,14 +42,18 @@ void showLoginModal(BuildContext context) {
             setState(() => isLoading = false);
           }
 
-          return SizedBox(
-            height: 700,
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 20,
+            ),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min, // makes it shrink-wrap
                     children: [
                       const Gap(18),
                       Text('Login to your account',
@@ -75,13 +76,11 @@ void showLoginModal(BuildContext context) {
                       ),
                       Gap(8.h),
                       EmbarkTextfield(
+                        autofocus: true,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (name) {
-                          if (name == null || name.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return null;
-                        },
+                        validator: (name) => name == null || name.isEmpty
+                            ? 'This field is required'
+                            : null,
                         controller: _nameController,
                         labelText: 'Name',
                         hintText: 'Enter name',
@@ -193,6 +192,7 @@ void showLoginModal(BuildContext context) {
                                   isTapped ? TextDecoration.underline : null),
                         ),
                       ),
+                      const Gap(20),
                     ],
                   ),
                 ),

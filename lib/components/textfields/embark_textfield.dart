@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EmbarkTextfield extends StatelessWidget {
   final String? labelText;
   final InputBorder? border;
+  final List<TextInputFormatter>? inputFormatters;
   final InputBorder? errorBorder;
   final InputBorder? enabledborder;
   final InputBorder? focusedborder;
@@ -12,6 +14,7 @@ class EmbarkTextfield extends StatelessWidget {
   final TextStyle? labelStyle;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final bool? autofocus;
   final Color? color;
   final TextInputType? keyBoardType;
   final BorderRadiusGeometry? borderRadius;
@@ -43,6 +46,8 @@ class EmbarkTextfield extends StatelessWidget {
     this.errorStyle,
     this.focusedErrorBorder,
     this.errorBorder,
+    this.inputFormatters,
+    this.autofocus,
   });
 
   @override
@@ -52,6 +57,8 @@ class EmbarkTextfield extends StatelessWidget {
       borderSide: BorderSide(color: Colors.grey.shade800, width: 0.5),
     );
     return TextFormField(
+      autofocus: autofocus ?? false,
+      inputFormatters: inputFormatters,
       autovalidateMode: autovalidateMode ?? AutovalidateMode.onUserInteraction,
       validator: validator,
       onSaved: onSaved,

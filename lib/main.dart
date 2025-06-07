@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme().darkMode,
           themeMode: themeMode,
           onGenerateRoute: onGenerateRoute,
-          initialRoute: PageRoutes.introPage.name,
+          initialRoute: PageRoutes.dashBoard.name,
         );
       },
     );

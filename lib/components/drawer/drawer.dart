@@ -75,7 +75,7 @@ class _DrawerPageState extends State<DrawerPage> {
       child: Column(
         children: [
           Container(
-            height: 200,
+            height: 220.h,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               border: null,
@@ -86,7 +86,7 @@ class _DrawerPageState extends State<DrawerPage> {
               bottom: false,
               child: Column(
                 children: [
-                  Gap(20.h),
+                  Gap(18.h),
                   Center(
                       child: Text(
                     'EMBARK!',
@@ -96,7 +96,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         letterSpacing: 4.0,
                         color: Theme.of(context).colorScheme.surface),
                   )),
-                  Gap(25.h),
+                  Gap(18.h),
                   ListTile(
                     minTileHeight: 64,
                     // tileColor: Colors.grey,
@@ -135,7 +135,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.surface)),
+                            color: Colors.green)),
                   ),
                 ],
               ),

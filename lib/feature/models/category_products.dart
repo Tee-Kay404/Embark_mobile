@@ -32,10 +32,9 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
-    final response =
-        await http.get(Uri.parse('http://localhost:3000/products'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:3000/products'));
     if (response.statusCode == 200) {
       final List<dynamic> productList = jsonDecode(response.body);
       final loadedProducts =
@@ -53,13 +52,12 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
 
     return Scaffold(
+        backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
-          title: Text('${widget.category} Products'),
+          title: Text('Products(${widget.category})'),
+          centerTitle: true,
           backgroundColor: theme.colorScheme.primary,
           foregroundColor: theme.colorScheme.surface,
         ),
@@ -87,41 +85,45 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0.0, vertical: 5),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          contentPadding: EdgeInsets.only(right: 10),
-                          tileColor: Theme.of(context).colorScheme.surface,
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 40.h,
-                            child: Image.asset(item.imagePath),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 1),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            contentPadding: EdgeInsets.only(right: 10),
+                            tileColor: Theme.of(context).colorScheme.surface,
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white60,
+                              radius: 40.h,
+                              child: Image.asset(item.imagePath),
+                            ),
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item.description,
+                                    style: style?.copyWith(
+                                        fontSize: 16, color: Colors.black)),
+                                Text('\$${item.code}', style: style)
+                              ],
+                            ),
+                            subtitle: Text('${item.volume}', style: style),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('${item.id.toInt()}', style: style),
+                                Text('\$${item.price.toInt()}', style: style)
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                PageRoutes.productDetails.name,
+                                arguments: item,
+                              );
+                            },
                           ),
-                          title: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(item.description,
-                                  style: style?.copyWith(
-                                      fontSize: 16, color: Colors.black)),
-                              Text('\$${item.code}', style: style)
-                            ],
-                          ),
-                          subtitle: Text('${item.volume}', style: style),
-                          trailing: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('${item.id.toInt()}', style: style),
-                              Text('\$${item.price.toInt()}', style: style)
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              PageRoutes.productDetails.name,
-                              arguments: item,
-                            );
-                          },
                         ),
                       );
                     },

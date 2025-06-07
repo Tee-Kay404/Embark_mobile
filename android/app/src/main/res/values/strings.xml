@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Embark_mobile</string>
+    <string name="facebook_app_id">724822676909209</string>
+    <string name="fb_login_protocol_scheme">fb724822676909209</string>
+    <string name="facebook_client_token">e511841b5c56e50e9adda1dba09e6242</string>
+</resources>

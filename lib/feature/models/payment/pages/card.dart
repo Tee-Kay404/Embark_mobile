@@ -1,9 +1,12 @@
+import 'package:Embark_mobile/feature/models/product_models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CardPayment extends StatelessWidget {
-  const CardPayment({super.key});
+  final Product product;
+  const CardPayment({super.key, required this.product});
 
   final String bankName = "Awesome Bank Ltd.";
   final String accountNumber = "2346889422";
@@ -27,13 +30,81 @@ class CardPayment extends StatelessWidget {
 
   TextStyle? transferTextStyle(BuildContext context) {
     return Theme.of(context).textTheme.bodySmall?.copyWith(
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
         );
   }
 
   String get qrData =>
       'BANK:$bankName\nACCOUNT:$accountNumber\nHOLDER:$accountHolder';
+
+  void _showMoreInfoSheet(BuildContext context, Product product) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) {
+        return Container(
+          height: 440.h,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: Center(
+                        child: Image.asset(
+                          product.imagePath,
+                          height: 110,
+                        ),
+                      )),
+                ),
+                SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(product.description,
+                      style: Theme.of(context).textTheme.bodyMedium),
+                ),
+                const SizedBox(height: 10),
+                Text('Category: ${product.category}',
+                    style: Theme.of(context).textTheme.titleSmall),
+                Text('Volume: ${product.volume}',
+                    style: Theme.of(context).textTheme.titleSmall),
+                Text('Code: ${product.code}',
+                    style: Theme.of(context).textTheme.titleSmall),
+                Text('Price: \$${product.price}',
+                    style: Theme.of(context).textTheme.titleSmall),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Close',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.surface)),
+                    style: ButtonStyle(
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadiusGeometry.circular(10))),
+                        foregroundColor: WidgetStatePropertyAll(
+                            Theme.of(context).colorScheme.primary),
+                        padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
+                        backgroundColor: WidgetStatePropertyAll(
+                            Theme.of(context).colorScheme.primary)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +167,7 @@ class CardPayment extends StatelessWidget {
             ),
             Spacer(),
             ElevatedButton.icon(
-              onPressed: () {
-                // Add extra logic if needed
-              },
+              onPressed: () => _showMoreInfoSheet(context, product),
               icon: Icon(Icons.info_outline),
               label: Text('More Info', style: textStyle),
               style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),

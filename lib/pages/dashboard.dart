@@ -3,9 +3,11 @@ import 'package:Embark_mobile/feature/models/cart_page.dart';
 import 'package:Embark_mobile/feature/shared/bottom_navbar.dart';
 import 'package:Embark_mobile/pages/account.dart';
 import 'package:Embark_mobile/pages/orders.dart';
+import 'package:Embark_mobile/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:Embark_mobile/feature/auth/settings.dart';
 import 'package:Embark_mobile/pages/items.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -15,21 +17,31 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final ValueNotifier<bool> _triggerSearchNotifier = ValueNotifier(false);
+
   int _currentPage = 0;
   final PageController _pageController = PageController();
 
+  @override
+  void dispose() {
+    _triggerSearchNotifier.dispose();
+    _pageController.dispose();
+    super.dispose();
+  }
+
   List<Widget> get pages => [
-        ItemsPage(),
+        ItemsPage(triggerSearchNotifier: _triggerSearchNotifier),
         OrdersPage(products: {}),
         CartPage(products: {}),
         SettingsPage(),
-        AccountPage()
+        AccountPage(),
       ];
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
+  void _triggerSearchFromFab() {
+    _pageController.jumpToPage(0);
+    Future.delayed(Duration(milliseconds: 100), () {
+      _triggerSearchNotifier.value = true;
+    });
   }
 
   void _onPageChanged(int index) {
@@ -48,77 +60,59 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final _color = Theme.of(context).colorScheme.primary;
+    final style = Theme.of(context).textTheme.bodySmall?.copyWith(
+        fontSize: 16,
+        color: Theme.of(context).colorScheme.surface,
+        fontWeight: FontWeight.w600);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: FloatingActionButton(
-        splashColor: Colors.transparent,
-        isExtended: true,
-        mini: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.add_event,
+        backgroundColor: Colors.blue.shade700,
+        foregroundColor: Colors.white,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.3,
+        spacing: 10,
+        spaceBetweenChildren: 1,
+        children: [
+          SpeedDialChild(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.surface,
+            child: Icon(Icons.category_outlined),
+            label: 'Categories',
+            labelStyle: style,
+            labelBackgroundColor: _color,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(
+                context,
+                PageRoutes.category.name,
+              );
+            },
+          ),
+          SpeedDialChild(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.surface,
+            child: Icon(Icons.support_agent),
+            label: 'Support',
+            labelStyle: style,
+            labelBackgroundColor: _color,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, PageRoutes.contact.name);
+            },
+          ),
+          SpeedDialChild(
               backgroundColor: Theme.of(context).colorScheme.primary,
-              title: Text('Add product to inventory list?'),
-              titleTextStyle: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              content: TextField(
-                style: TextStyle(fontSize: 14, color: Colors.black),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(8),
-                  fillColor: Theme.of(context).colorScheme.surface,
-                  filled: true,
-                  hintText: 'Add product',
-                  hintStyle:
-                      TextStyle(fontSize: 16, color: Colors.grey.shade500),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    splashFactory: NoSplash.splashFactory,
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
-                    backgroundColor: WidgetStatePropertyAll(
-                        Theme.of(context).colorScheme.surface),
-                    foregroundColor: WidgetStatePropertyAll(Colors.blue),
-                  ),
-                  child: Text(
-                    'Add',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ButtonStyle(
-                    splashFactory: NoSplash.splashFactory,
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
-                    foregroundColor: WidgetStatePropertyAll(Colors.blue),
-                  ),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-        child: Icon(Icons.add, size: 25, color: Colors.white),
+              foregroundColor: Theme.of(context).colorScheme.surface,
+              child: Icon(Icons.search),
+              label: 'Search',
+              labelStyle: style,
+              labelBackgroundColor: _color,
+              onTap: _triggerSearchFromFab),
+        ],
       ),
       drawer: DrawerPage(),
       body: PageView(

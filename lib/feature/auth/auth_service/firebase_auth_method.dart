@@ -2,6 +2,7 @@ import 'package:Embark_mobile/feature/util/show_dialog.dart';
 import 'package:Embark_mobile/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -130,5 +131,17 @@ class FirebaseAuthMethods {
         idToken: gAuth.idToken, accessToken: gAuth.accessToken);
     // finally let's sign In
     return await FirebaseAuth.instance.signInWithCredential(credentials);
+  }
+
+  // Facebook login
+  Future<void> signInWithFacebook(BuildContext context) async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      await _auth.signInWithCredential(facebookAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      showFirebaseDialog(context, e.message!);
+    }
   }
 }

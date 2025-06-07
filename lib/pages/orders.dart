@@ -21,7 +21,7 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> {
   List<String> orders = [];
-
+  List<Map<String, dynamic>> _filteredOrders = [];
   List<String> status = ['pending', 'shipped', 'delivered', 'cancelled'];
 
   List<Map<String, dynamic>> filter = [
@@ -32,9 +32,9 @@ class _OrdersPageState extends State<OrdersPage> {
   ];
 
   late String _selectedFilter;
+  String _searchQuery = '';
 
   final user = FirebaseAuth.instance.currentUser;
-
   DateTime now = DateTime.now();
   late String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
@@ -42,6 +42,36 @@ class _OrdersPageState extends State<OrdersPage> {
   void initState() {
     super.initState();
     _selectedFilter = filter[0]['filter'];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final order = Provider.of<CartProvider>(context, listen: false).order;
+      orders = order.map((e) => e['description'].toString()).toList();
+      _applyFilters(order);
+    });
+  }
+
+  void _applyFilters(List<Map<String, dynamic>> order) {
+    List<Map<String, dynamic>> result = order;
+
+    if (_selectedFilter != 'All') {
+      result = result
+          .where((item) =>
+              item['status']?.toString().toLowerCase() ==
+              _selectedFilter.toLowerCase())
+          .toList();
+    }
+
+    if (_searchQuery.isNotEmpty) {
+      result = result
+          .where((item) => item['description']
+              .toString()
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      _filteredOrders = result;
+    });
   }
 
   @override
@@ -64,7 +94,6 @@ class _OrdersPageState extends State<OrdersPage> {
                 padding: EdgeInsets.symmetric(horizontal: 15.sp),
                 child: Column(
                   children: [
-                    Gap(65.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -73,7 +102,7 @@ class _OrdersPageState extends State<OrdersPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
-                              ?.copyWith(color: Colors.white, fontSize: 22),
+                              ?.copyWith(color: Colors.white),
                         ),
                         EmailAvatar(),
                       ],
@@ -86,6 +115,15 @@ class _OrdersPageState extends State<OrdersPage> {
                         suggestions: orders
                             .map((e) => SearchFieldListItem<String>(e))
                             .toList(),
+                        onSuggestionTap: (SearchFieldListItem<String> item) {
+                          setState(() {
+                            _searchQuery = item.searchKey;
+                            final order = Provider.of<CartProvider>(context,
+                                    listen: false)
+                                .order;
+                            _applyFilters(order);
+                          });
+                        },
                         searchInputDecoration: SearchInputDecoration(
                           searchStyle: Theme.of(context)
                               .textTheme
@@ -130,6 +168,10 @@ class _OrdersPageState extends State<OrdersPage> {
                   onTap: () {
                     setState(() {
                       _selectedFilter = filter[index]['filter'];
+                      final order =
+                          Provider.of<CartProvider>(context, listen: false)
+                              .order;
+                      _applyFilters(order);
                     });
                   },
                   child: Chip(
@@ -177,7 +219,7 @@ class _OrdersPageState extends State<OrdersPage> {
               }).toList(),
             ),
             Expanded(
-                child: order.isEmpty
+                child: _filteredOrders.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -186,7 +228,9 @@ class _OrdersPageState extends State<OrdersPage> {
                                 size: 80, color: Colors.grey.shade400),
                             Gap(10),
                             Text(
-                              "You haven't ordered anything yet",
+                              _selectedFilter == 'All'
+                                  ? "You haven't ordered anything yet"
+                                  : "No ${_selectedFilter.toLowerCase()} orders yet",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium

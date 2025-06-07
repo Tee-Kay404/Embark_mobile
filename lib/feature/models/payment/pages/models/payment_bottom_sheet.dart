@@ -17,7 +17,7 @@ void showPaymentMethod(
         return StatefulBuilder(builder: (BuildContext context, setState) {
           final user = FirebaseAuth.instance.currentUser;
           return SizedBox(
-            height: 350,
+            height: 400.h,
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -30,10 +30,10 @@ void showPaymentMethod(
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         letterSpacing: 4,
-                        fontSize: 15),
+                        fontSize: 10.sp),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 10.h,
                     child: Divider(
                       height: 0.5,
                       thickness: 0.2,
@@ -45,14 +45,14 @@ void showPaymentMethod(
                     'Choose Payment Method',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontSize: 20),
+                        .bodySmall
+                        ?.copyWith(fontSize: 17.sp),
                   ),
                   Gap(5.h),
                   Text(
                     user?.email.toString() ?? '?',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 12.h,
+                        fontSize: 10.h,
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).colorScheme.primary),
                   ),
@@ -68,6 +68,7 @@ void showPaymentMethod(
                       .map((method) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
                             child: ListTile(
+                              minTileHeight: 40.h,
                               tileColor: Theme.of(context).colorScheme.surface,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -82,7 +83,7 @@ void showPaymentMethod(
                                     .textTheme
                                     .bodySmall
                                     ?.copyWith(
-                                        fontSize: 17,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w600),
                               ),
                               trailing: Radio(
@@ -107,7 +108,7 @@ void showPaymentMethod(
                           splashFactory: NoSplash.splashFactory,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          minimumSize: Size(double.infinity, 50),
+                          minimumSize: Size(double.infinity, 38.h),
                           alignment: Alignment.center,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
@@ -125,7 +126,7 @@ void showPaymentMethod(
                                       .textTheme
                                       .bodySmall
                                       ?.copyWith(
-                                          fontSize: 17,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
                                           color: Theme.of(context)
                                               .colorScheme
@@ -152,7 +153,8 @@ void showPaymentMethod(
                             break;
                           case 'Bank Transfer':
                             Navigator.pushNamed(
-                                outerContext, PageRoutes.cardPayment.name);
+                                outerContext, PageRoutes.cardPayment.name,
+                                arguments: products);
                             break;
                         }
                       },

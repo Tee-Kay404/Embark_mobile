@@ -1,8 +1,68 @@
+import 'package:Embark_mobile/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ContactPage extends StatelessWidget {
+class ContactPage extends StatefulWidget {
+  @override
+  State<ContactPage> createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage() {
+    if (_formKey.currentState!.validate()) {
+      _nameController.clear();
+      _emailController.clear();
+      _messageController.clear();
+      _formKey.currentState!.reset();
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          int seconds = 1;
+
+          Future.delayed(Duration(seconds: seconds), () {
+            if (Navigator.canPop(context)) Navigator.of(context).pop();
+          });
+
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.green, size: 22.sp),
+                SizedBox(width: 8.w),
+                Text(
+                  'Message Sent',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: Theme.of(context).colorScheme.surface),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -10,6 +70,13 @@ class ContactPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, PageRoutes.dashBoard.name),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.surface,
+            )),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.surface,
         title: Text(
@@ -81,42 +148,48 @@ class ContactPage extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.r),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Send a Message',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 18.sp, // Increased from 16.sp
-                        fontWeight: FontWeight.w600,
-                      )),
-                  SizedBox(height: 14.h),
-                  inputField(context, 'Your Name'),
-                  inputField(context, 'Email Address'),
-                  inputField(context, 'Message', maxLines: 4),
-                  SizedBox(height: 14.h),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50.h,
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade700,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                      onPressed: () {},
-                      icon: Icon(Icons.send, size: 18.sp),
-                      label: Text(
-                        'Send Message',
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Send a Message',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 16.sp, // Increased from 14.sp
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        )),
+                    SizedBox(height: 14.h),
+                    inputField(context, 'Your Name',
+                        controller: _nameController),
+                    inputField(context, 'Email Address',
+                        controller: _emailController, isEmail: true),
+                    inputField(context, 'Message',
+                        controller: _messageController, maxLines: 4),
+                    SizedBox(height: 14.h),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50.h,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue.shade700,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        onPressed: _sendMessage,
+                        icon: Icon(Icons.send, size: 18.sp),
+                        label: Text(
+                          'Send Message',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
@@ -156,17 +229,41 @@ class ContactPage extends StatelessWidget {
         ),
       );
 
-  Widget inputField(BuildContext context, String hint, {int maxLines = 1}) {
+  Widget inputField(BuildContext context, String hint,
+      {required TextEditingController controller,
+      int maxLines = 1,
+      bool isEmail = false}) {
     final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.only(bottom: 14.h),
-      child: TextField(
+      child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        controller: controller,
         maxLines: maxLines,
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return 'Please enter $hint';
+          }
+          if (isEmail && !RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+            return 'Enter a valid email address';
+          }
+          return null;
+        },
         style: theme.textTheme.bodySmall?.copyWith(
           fontWeight: FontWeight.w600,
           fontSize: 14.sp,
         ),
         decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.primary)),
+          focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 2),
+              borderRadius: BorderRadius.circular(10)),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.red, width: 1)),
+          errorStyle: TextStyle(color: Colors.red, fontSize: 12),
           hintText: hint,
           hintStyle: theme.textTheme.bodySmall?.copyWith(
             fontSize: 14.sp,

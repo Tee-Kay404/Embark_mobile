@@ -89,11 +89,14 @@ class _AccountPageState extends State<AccountPage> {
         foregroundColor: theme.colorScheme.surface,
         title: const Text("My Account"),
         centerTitle: true,
-        elevation: 0,
+        elevation: 4,
+        shadowColor:
+            Colors.black.withOpacity(0.25), // optional for more visible shadow
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () =>
-                Navigator.pushNamed(context, PageRoutes.dashBoard.name)),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () =>
+              Navigator.pushNamed(context, PageRoutes.dashBoard.name),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

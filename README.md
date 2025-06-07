@@ -2,7 +2,7 @@
 
 **Your Gateway to Smarter, Simpler Mobile E-Commerce**
 
-# EMBARK! is a modern e-commerce mobile application built with Flutter. Designed with performance, flexibility, and user # experience in mind, EMBARK! provides a seamless shopping experience for users — from browsing products to secure       checkout.
+# E M B A R K!, a modern e-commerce mobile application built with Flutter. Designed with performance, flexibility, and user # experience in mind, EMBARK! provides a seamless shopping experience for users — from browsing products to secure checkout.
 
 ---
 

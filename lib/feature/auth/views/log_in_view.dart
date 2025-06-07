@@ -140,6 +140,8 @@ class _LogInState extends State<LogInView> {
                 ),
                 const Gap(50),
                 RoundBox(
+                  onTap: () => FirebaseAuthMethods(FirebaseAuth.instance)
+                      .signInWithFacebook(context),
                   imagePath: 'assets/images/others/facebook.png',
                 ),
               ],
