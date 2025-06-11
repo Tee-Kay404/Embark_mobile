@@ -38,7 +38,7 @@ class CountryField extends FormField<String> {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                        horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: state.hasError ? Colors.red : Colors.grey,

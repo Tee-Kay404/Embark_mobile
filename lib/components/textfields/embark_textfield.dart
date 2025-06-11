@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmbarkTextfield extends StatelessWidget {
   final String? labelText;
@@ -65,7 +66,7 @@ class EmbarkTextfield extends StatelessWidget {
       controller: controller,
       obscureText: obscureText ?? false,
       style: TextStyle(
-        fontSize: 15,
+        fontSize: 15.sp,
         fontWeight: FontWeight.bold,
         color: Theme.of(context).colorScheme.secondary,
       ),

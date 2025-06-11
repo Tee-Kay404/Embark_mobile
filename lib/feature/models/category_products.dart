@@ -34,7 +34,8 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
     });
     await Future.delayed(const Duration(seconds: 2));
 
-    final response = await http.get(Uri.parse('http://10.0.2.2:3000/products'));
+    final response =
+        await http.get(Uri.parse('http://localhost:3000/products'));
     if (response.statusCode == 200) {
       final List<dynamic> productList = jsonDecode(response.body);
       final loadedProducts =

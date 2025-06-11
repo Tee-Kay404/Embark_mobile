@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class ProductApi {
   Future<List<Product>> fetchProducts() async {
     try {
-      const url = 'http://192.168.94.181:3000/products';
+      const url = 'http://localhost:3000/products';
       final uri = Uri.parse(url);
       final res = await http.get(uri);
       final body = res.body;

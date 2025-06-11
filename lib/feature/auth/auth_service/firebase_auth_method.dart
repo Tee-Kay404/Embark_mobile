@@ -74,7 +74,10 @@ class FirebaseAuthMethods {
 
       if (userCred.user!.emailVerified) {
         showFirebaseDialog(context, '✅ Login Successful').then((value) {
-          Navigator.pushReplacementNamed(context, PageRoutes.dashBoard.name);
+          Navigator.pushReplacementNamed(
+            context,
+            PageRoutes.dashBoard.name,
+          );
         });
       } else {
         showFirebaseDialog(context, 'Email not verified');

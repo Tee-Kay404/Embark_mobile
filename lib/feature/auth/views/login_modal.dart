@@ -76,7 +76,6 @@ void showLoginModal(BuildContext context) {
                       ),
                       Gap(8.h),
                       EmbarkTextfield(
-                        autofocus: true,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (name) => name == null || name.isEmpty
                             ? 'This field is required'

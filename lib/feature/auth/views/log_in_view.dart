@@ -1,4 +1,5 @@
 import 'package:Embark_mobile/feature/auth/auth_service/firebase_auth_method.dart';
+import 'package:Embark_mobile/feature/util/show_dialog.dart';
 import 'package:Embark_mobile/widget/login_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -134,8 +135,16 @@ class _LogInState extends State<LogInView> {
                 ),
                 const Gap(50),
                 RoundBox(
-                  onTap: () => FirebaseAuthMethods(FirebaseAuth.instance)
-                      .signInWithGoogle(),
+                  onTap: () async {
+                    try {
+                      await FirebaseAuthMethods(FirebaseAuth.instance)
+                          .signInWithGoogle();
+                      // navigate or update UI here -
+                    } catch (e) {
+                      print("Google Sign-in failed: $e");
+                      showFirebaseDialog(context, "Google Sign-in failed");
+                    }
+                  },
                   imagePath: 'assets/images/others/google.png',
                 ),
                 const Gap(50),

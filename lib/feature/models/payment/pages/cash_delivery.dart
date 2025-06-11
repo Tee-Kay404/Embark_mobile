@@ -142,7 +142,7 @@ class CashDelivery extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return Container(
-                                              height: 300.h,
+                                              height: 290.h,
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(

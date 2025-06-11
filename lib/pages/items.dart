@@ -96,7 +96,7 @@ class _ItemsPageState extends State<ItemsPage> {
         Container(
           color: Theme.of(context).colorScheme.surface,
           child: Container(
-            height: 200.h,
+            height: 190.h,
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary,
                 borderRadius:

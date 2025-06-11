@@ -110,7 +110,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        padding: EdgeInsets.symmetric(horizontal: 30.0),
         child: SafeArea(
           child: Form(
             key: _formKey,
@@ -135,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.blueGrey.shade500,
                     ),
                   ),
-                  const Gap(17),
+                  Gap(14.h),
                   Text(
                     'Name',
                     style: TextStyle(
@@ -164,7 +164,7 @@ class _SignUpState extends State<SignUp> {
                       color: _color,
                     ),
                   ),
-                  const Gap(17),
+                  Gap(14.h),
                   Text(
                     'Email',
                     style: TextStyle(
@@ -193,7 +193,7 @@ class _SignUpState extends State<SignUp> {
                       color: _color,
                     ),
                   ),
-                  Gap(17.h),
+                  Gap(14.h),
                   Text(
                     'Password',
                     style: TextStyle(
@@ -238,7 +238,7 @@ class _SignUpState extends State<SignUp> {
                           color: Colors.grey.shade600,
                         )),
                   ),
-                  Gap(17.h),
+                  Gap(14.h),
                   Text(
                     'Confirm Password',
                     style: TextStyle(
@@ -284,7 +284,7 @@ class _SignUpState extends State<SignUp> {
                           color: Colors.grey.shade600,
                         )),
                   ),
-                  Gap(17.h),
+                  Gap(14.h),
                   Text(
                     'Location',
                     style: TextStyle(
@@ -359,7 +359,7 @@ class _SignUpState extends State<SignUp> {
                               width: 5,
                             )),
                             TextSpan(
-                                text: 'Privacy\n Policy',
+                                text: '\nPrivacy Policy',
                                 style: TextStyle(
                                     color: _showTermsError
                                         ? Colors.red
@@ -472,7 +472,8 @@ class _SignUpState extends State<SignUp> {
                         ),
                       )
                     ],
-                  )
+                  ),
+                  Gap(20.h)
                 ],
               ),
             ),

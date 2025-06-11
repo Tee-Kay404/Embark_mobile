@@ -68,7 +68,7 @@ void showPaymentMethod(
                       .map((method) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
                             child: ListTile(
-                              minTileHeight: 40.h,
+                              minTileHeight: 55.h,
                               tileColor: Theme.of(context).colorScheme.surface,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -108,10 +108,11 @@ void showPaymentMethod(
                           splashFactory: NoSplash.splashFactory,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          minimumSize: Size(double.infinity, 38.h),
+                          minimumSize: Size(double.infinity, 45.h),
                           alignment: Alignment.center,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .primary,
                           iconColor: Theme.of(context).colorScheme.primary),
                       onPressed: () {
                         if (_selectedMethod.isEmpty) {
@@ -161,7 +162,7 @@ void showPaymentMethod(
                       child: Text('Continue',
                           style: Theme.of(context)
                               .textTheme
-                              .bodyMedium
+                              .bodySmall
                               ?.copyWith(
                                   color:
                                       Theme.of(context).colorScheme.surface)))
