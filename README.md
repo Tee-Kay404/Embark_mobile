@@ -4,7 +4,7 @@
 
 # E M B A R K!, a modern e-commerce mobile application built with Flutter. Designed with performance, flexibility, and user # experience in mind, EMBARK! provides a seamless shopping experience for users — from browsing products to secure checkout.
 
-![App_UI] (https://github.com/Tee-Kay404/Embark_mobile/blob/376590288bf174061c267cf3bc8d0f88c37b6592/Embark.png)
+![App_UI](https://github.com/Tee-Kay404/Embark_mobile/blob/376590288bf174061c267cf3bc8d0f88c37b6592/Embark.png)
 ---
 
 ## 🚀 About EMBARK!
